@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb:latest
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      wordpress:
+        ipv4_address: 192.168.102.3
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - ./wordpress:/var/www/html
+    command: >
+      bash -c "echo 'ServerName 192.168.101.2' >> /etc/apache2/apache2.conf
+      && echo 'post_max_size = 64M' > /usr/local/etc/php/conf.d/my-php.ini
+      && echo 'upload_max_filesize = 64M' >> /usr/local/etc/php/conf.d/my-php.ini
+      && echo 'memory_limit = 512M' >> /usr/local/etc/php/conf.d/my-php.ini
+      && docker-entrypoint.sh apache2-foreground"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DEBUG: "true"
+    networks:
+      wordpress:
+        ipv4_address: 192.168.102.2
+
+networks:
+  wordpress:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.102.0/24
+

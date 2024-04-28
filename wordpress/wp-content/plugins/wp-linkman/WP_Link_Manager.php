@@ -34,25 +34,6 @@ class WP_Link_Manager {
         update_option('wp_link_manager_settings', $default_settings);
     }
     
-    /*
-    public function enqueue_scripts() {
-        wp_enqueue_script('wp-linkman-js', plugins_url('assets/js/linkman.js', __FILE__), array('jquery'), '1.0', true);
-        wp_enqueue_style('wp-linkman-css', plugins_url('assets/css/linkman.css', __FILE__));
-    
-        $options = get_option('wp_link_manager_settings');
-        $popupText = isset($options['wp_link_manager_text']) ? $options['wp_link_manager_text'] : '';
-        // Adding site title to the popup text.
-        $popupText = str_replace('${SITE_TITLE}', get_bloginfo('name'), $popupText);
-
-        $script_data = array(
-            'newTab' => isset($options['new_tab']) && $options['new_tab'] == 'yes' ? true : false,
-            'popupText' => $popupText
-        );
-
-        wp_localize_script('wp-linkman-js', 'wpLinkman', $script_data);
-    }
-     */
-
     public function enqueue_scripts() {
         // Enqueue the JavaScript file
         wp_enqueue_script('wp-linkman-js', plugins_url('assets/js/linkman.js', __FILE__), array('jquery'), '1.0', true);

@@ -10,10 +10,6 @@ class WP_Link_Manager_Settings {
         add_options_page(__('WP Link Manager', 'wp-linkman'), __('WP Link Manager', 'wp-linkman'), 'manage_options', 'wp_link_manager', array($this, 'options_page'));
     }    
 
-//    public function add_admin_menu() {
-//        add_options_page('WP Link Manager', 'WP Link Manager', 'manage_options', 'wp_link_manager', array($this, 'options_page'));
-//    }
-
     public function settings_init() {
         register_setting('wpLinkManager', 'wp_link_manager_settings');
 

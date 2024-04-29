@@ -1,19 +1,22 @@
 jQuery(document).ready(function($) {
     $('a').filter(function() {
-        // Filter out internal links and ensure the link is an actual URL
         return this.hostname && this.hostname !== location.hostname;
     }).click(function(e) {
         e.preventDefault(); // Prevent the default link behavior
 
         var externalUrl = $(this).attr('href');
-        var openInNewTab = wpLinkman.newTab;  // Access the newTab property from localized script data
+        var openInNewTab = wpLinkman.newTab;
         var popupText = wpLinkman.popupText.replace('${DESTINATION_URL}', externalUrl); // Replace destination URL in the popup text
 
-        // Create the popup with ID and append content
         var popup = $('<div>').attr('id', 'linkManagerPopup');
         var message = $('<p>').text(popupText);
-        var continueButton = $('<button>').text('Continue');
-        var cancelButton = $('<button>').text('Cancel');
+        // Access the localized button texts
+        var continueButtonText = wpLinkman.continueText || 'Continue';
+        var cancelButtonText = wpLinkman.cancelText || 'Cancel';
+
+        var continueButton = $('<button>').text(continueButtonText);
+        var cancelButton = $('<button>').text(cancelButtonText);
+
 
         continueButton.on('click', function() {
             popup.remove();

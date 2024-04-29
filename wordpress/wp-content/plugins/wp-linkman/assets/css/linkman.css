@@ -27,3 +27,16 @@
 #linkManagerPopup button:last-child {
     margin-right: 0; /* Ensure there is no extra margin on the last button */
 }
+
+/*
+#wpLinkManager textarea {
+    width: 90%;
+    box-sizing: border-box;
+}
+
+
+#wpLinkManager input[type="text"] {
+    width: auto;
+    box-sizing: border-box;
+}
+*/

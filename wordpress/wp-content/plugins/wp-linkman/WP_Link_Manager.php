@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP Link Manager
  * Plugin URI:  https://github.com/Relivian/wp-linkman
- * Description: Plugin that requests user confirmation when leaving the site.
+ * Description: Plugin that requests user confirmation before leaving the site.
  * Version:     1.0
  * Author:      Relivian
  * Author URI:  https://dev.aeonsvirtue.com
@@ -38,7 +38,7 @@ class WP_Link_Manager {
     public static function activate() {
         $default_settings = self::get_default_settings();
         $existing_options = get_option('wp_link_manager_settings', []);
-        // Ensure each key in default settings is present, do not overwrite existing
+        // ensure each key in default settings is present, do not overwrite existing
         foreach ($default_settings as $key => $value) {
             if (!isset($existing_options[$key])) {
                 $existing_options[$key] = $value;
@@ -51,23 +51,23 @@ class WP_Link_Manager {
         $options = get_option('wp_link_manager_settings');
         $current_lang = $this->get_current_language();
 
-        // Create language-specific keys for popup text and button labels
+        // create language-specific keys for popup text and button labels
         $popupTextKey = "wp_link_manager_text" . ($current_lang ? "_{$current_lang}" : '');
         $continueTextKey = "wp_link_manager_continue_text" . ($current_lang ? "_{$current_lang}" : '');
         $cancelTextKey = "wp_link_manager_cancel_text" . ($current_lang ? "_{$current_lang}" : '');
 
-        // Retrieve the localized texts or use the default settings if not available
+        // retrieve the localized texts or use the default settings if not available
         $popupText = isset($options[$popupTextKey]) ? $options[$popupTextKey] : $options['wp_link_manager_text'];
         $continueText = isset($options[$continueTextKey]) ? $options[$continueTextKey] : $options['wp_link_manager_continue_text'];
         $cancelText = isset($options[$cancelTextKey]) ? $options[$cancelTextKey] : $options['wp_link_manager_cancel_text'];
 
-        // Replace ${SITE_TITLE} with the actual site title
-        $popupText = str_replace('${SITE_TITLE}', get_bloginfo('name'), $popupText);
+        // replace ${SITE_TITLE} with the actual site title
+        $resolvedText = str_replace('${SITE_TITLE}', get_bloginfo('name'), $popupText);
         
-        // Setup script data to localize the script properly
+        // setup script data to localize the script properly
         $script_data = array(
             'newTab' => isset($options['new_tab']) && $options['new_tab'] === 'yes',
-            'popupText' => $popupText,
+            'popupText' => $resolvedText,
             'continueText' => $continueText,
             'cancelText' => $cancelText
         );
@@ -77,8 +77,6 @@ class WP_Link_Manager {
         wp_enqueue_style('wp-linkman-css', plugins_url('assets/css/linkman.css', __FILE__));
     }
    
-   
-    
     private function get_current_language() {
         if (function_exists('icl_object_id')) {
             return ICL_LANGUAGE_CODE;

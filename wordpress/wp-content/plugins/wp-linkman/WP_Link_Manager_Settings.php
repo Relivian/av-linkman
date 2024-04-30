@@ -11,7 +11,7 @@ class WP_Link_Manager_Settings {
     }    
 
     public function settings_section_callback() {
-        echo __('Set the popup text and other configurations.', 'wp-linkman');
+        echo esc_html(__('Set the popup text and other configurations.', 'wp-linkman'));
     }
 
     public function options_page() {
@@ -30,7 +30,7 @@ class WP_Link_Manager_Settings {
     public function new_tab_field_render() {
         $options = get_option('wp_link_manager_settings');
         $new_tab = isset($options['new_tab']) ? $options['new_tab'] : '';
-        echo '<input type="checkbox" name="wp_link_manager_settings[new_tab]" ' . checked($new_tab, 'yes', false) . ' value="yes"> ' . __('Yes', 'wp-linkman');
+        echo '<input type="checkbox" name="wp_link_manager_settings[new_tab]" ' . esc_attr(checked($new_tab, 'yes', false)) . ' value="yes"> ' . esc_html(__('Yes', 'wp-linkman'));
     }
     public function settings_init() {
         register_setting('wpLinkManager', 'wp_link_manager_settings');
@@ -52,14 +52,16 @@ class WP_Link_Manager_Settings {
 
         $this->add_language_fields();    
     }
-
+    
     private function add_language_fields() {
         $languages = $this->get_active_languages();
         foreach ($languages as $lang => $label) {
             // Popup Text Field
+            // translators: %s is the language label used for popup text.
+            $popupText = sprintf(__("Popup Text (%s)", 'wp-linkman'), $label);
             add_settings_field(
                 "wp_link_manager_text_{$lang}", 
-                __("Popup Text ($label)", 'wp-linkman'), 
+                $popupText, 
                 function() use ($lang) {
                     $this->settings_text_render('wp_link_manager_text', $lang);
                 }, 
@@ -68,9 +70,11 @@ class WP_Link_Manager_Settings {
             );
 
             // Continue Button Text Field
+            // translators: %s is the language label used for continue button text.
+            $continueButtonText = sprintf(__("Continue Button Text (%s)", 'wp-linkman'), $label);
             add_settings_field(
                 "wp_link_manager_continue_text_{$lang}",
-                __("Continue Button Text ($label)", 'wp-linkman'),
+                $continueButtonText,
                 function() use ($lang) {
                     $this->settings_text_render('wp_link_manager_continue_text', $lang);
                 },
@@ -79,9 +83,11 @@ class WP_Link_Manager_Settings {
             );
 
             // Cancel Button Text Field
+            // translators: %s is the language label used for cancel button text.
+            $cancelButtonText = sprintf(__("Cancel Button Text (%s)", 'wp-linkman'), $label);
             add_settings_field(
                 "wp_link_manager_cancel_text_{$lang}",
-                __("Cancel Button Text ($label)", 'wp-linkman'),
+                $cancelButtonText,
                 function() use ($lang) {
                     $this->settings_text_render('wp_link_manager_cancel_text', $lang);
                 },
@@ -90,7 +96,7 @@ class WP_Link_Manager_Settings {
             );
         }
     }
-
+    
     public function settings_text_render($option_name, $lang = '') {
         $options = get_option('wp_link_manager_settings');
         $defaults = WP_Link_Manager::get_default_settings();
@@ -105,10 +111,10 @@ class WP_Link_Manager_Settings {
         // Determine if this is the popup text or a button label
         if ($option_name == 'wp_link_manager_text') {
             // textarea for popup text
-            echo "<textarea name='wp_link_manager_settings[$key]' rows='2' style='width: 90%;'>" . esc_textarea($text) . "</textarea>";
+            echo "<textarea name='wp_link_manager_settings[" . esc_attr($key) . "]' rows='2' style='width: 90%;'>" . esc_textarea($text) . "</textarea>";
         } else {
             // input for button labels
-            echo "<input type='text' name='wp_link_manager_settings[$key]' value='" . esc_attr($text) . "'>";
+            echo "<input type='text' name='wp_link_manager_settings[" . esc_attr($key) . "]' value='" . esc_attr($text) . "'>";
         }
     }
 

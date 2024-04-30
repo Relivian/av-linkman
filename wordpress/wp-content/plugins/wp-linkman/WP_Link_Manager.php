@@ -74,17 +74,20 @@ class WP_Link_Manager {
 
         wp_enqueue_script('wp-linkman-js', plugins_url('assets/js/linkman.js', __FILE__), array('jquery'), '1.0', true);
         wp_localize_script('wp-linkman-js', 'wpLinkman', $script_data);
-        wp_enqueue_style('wp-linkman-css', plugins_url('assets/css/linkman.css', __FILE__));
+        $version = filemtime(plugin_dir_path(__FILE__) . 'assets/css/linkman.css'); // using time will invalidate browser cache
+        wp_enqueue_style('wp-linkman-css', plugins_url('assets/css/linkman.css', __FILE__), array(), $version);
     }
    
     private function get_current_language() {
+        // get the default WordPress locale language part only, if specific language plugins are not installed
+        $langCode = substr(get_locale(), 0, 2); 
         if (function_exists('icl_object_id')) {
-            return ICL_LANGUAGE_CODE;
+            $langCode = ICL_LANGUAGE_CODE;
         } elseif (function_exists('pll_current_language')) {
-            return pll_current_language();
+            $langCode = pll_current_language();
         }
-        return '';
-    }
-}
+        return $langCode;
+     }
+} 
 
 new WP_Link_Manager();

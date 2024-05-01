@@ -5,4 +5,4 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 // Delete options from the database
-delete_option('wp_link_manager_settings');
+delete_option('av_link_manager_settings');

@@ -2,7 +2,7 @@
 Contributors: relivian
 Tags: links, external, popup, navigation, confirmation
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.5
 Stable tag: 1.0
 Requires PHP: 7.2
 License: GPLv3 or later

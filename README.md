@@ -51,6 +51,7 @@ Navigate to the plugin settings page, and you will find an option to configure l
 1. The main settings page where you can configure the pop-up texts and new tab functionality.
 ![Screenshot_1](wordpress/wp-content/plugins/av-linkman/assets/Screenshot-1.png)
 2. Example of the pop-up in action on a live website.
+![Screenshot_2](wordpress/wp-content/plugins/av-linkman/assets/Screenshot-2.png)
 
 ## Changelog
 
